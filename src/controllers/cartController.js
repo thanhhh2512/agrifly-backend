@@ -35,7 +35,7 @@ exports.addToCart = async (req, res) => {
   }
 };
 exports.removeFromCart = async (req, res) => {
-  const { userId, productId } = req.body;
+  const { userId, productIds } = req.body;
   try {
     const cart = await Cart.findOne({ userId });
     if (!cart)
@@ -43,7 +43,7 @@ exports.removeFromCart = async (req, res) => {
 
     // Xóa sản phẩm khỏi giỏ hàng
     cart.items = cart.items.filter(
-      (item) => item.productId.toString() !== productId
+      (item) => !productIds.includes(item.productId.toString()) // Sử dụng includes để kiểm tra
     );
     await cart.save();
 
@@ -61,7 +61,6 @@ exports.updateCartItem = async (req, res) => {
 
   try {
     const cart = await Cart.findOne({ userId });
-    console.log("🚀 ~ exports.updateCartItem= ~ cart:", cart);
     if (!cart)
       return res.status(404).json({ message: "Giỏ hàng không tồn tại" });
 

@@ -26,6 +26,7 @@ const googleLogin = async (req, res) => {
         name,
         email,
         avatar: picture,
+        role: "user",
       });
       await user.save();
     }

@@ -18,6 +18,19 @@ const productSchema = new mongoose.Schema({
   sprayingPayload: { type: Number },
   coverage: { type: Number },
   sprayingEfficiency: { type: String },
+  rental: { type: Number, default: 0 },
+  evaluation: { type: String, default: "" },
+  reviews: [
+    {
+      content: { type: String, required: false },
+      stars: { type: Number, required: false, min: 1, max: 5 },
+      reviewer: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+      orderId: { type: mongoose.Schema.Types.ObjectId, ref: "Order" },
+      rentalOrderId: { type: mongoose.Schema.Types.ObjectId, ref: "Rental" },
+      isReviewed: { type: Boolean, default: false },
+      createdAt: { type: Date, default: Date.now },
+    },
+  ],
 });
 
 module.exports = mongoose.model("Product", productSchema);
